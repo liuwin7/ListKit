@@ -31,16 +31,10 @@ open class ArrayDataSource<U, T> : NSObject, UITableViewDataSource where U:ListK
 
   /// The content represented in the table view
   open var array: Array<T>
-  
-  /// Initialize with a custom cell type
-  public init (array:Array<T> = [], cellType: U.Type) {
-    self.array = array
-    self.nib = nil
-  }
-  
+    
   /// Initialize with a custom cell type and a NIB file from which 
   /// the cell should be loaded
-  public init (array:Array<T> = [], cellType: U.Type, nib: UINib) {
+  public init (array:Array<T> = [], cellType: U.Type, nib: UINib? = nil) {
     self.array = array
     self.nib = nib
   }
@@ -63,7 +57,7 @@ open class ArrayDataSource<U, T> : NSObject, UITableViewDataSource where U:ListK
     
     // This can only be invalid if `nib` specifies a cell with the wrong class and the first dequeue didn't work
     guard var cell = nullableCell else {
-      fatalError("Unable to dequeue valid cell of type \(U.self) from reuse identifier \(cellIdentifier) or create cell of type \(U.self) from nib \(nib)")
+        fatalError("Unable to dequeue valid cell of type \(U.self) from reuse identifier \(cellIdentifier) or create cell of type \(U.self) from nib \(String(describing: nib))")
     }
     
     cell.model = array[(indexPath as NSIndexPath).row]
